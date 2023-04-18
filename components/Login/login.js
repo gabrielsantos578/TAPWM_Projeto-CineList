@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, {useState} from 'react';
 import {StyleSheet, View, Text, Image, SafeAreaView, Button, TouchableOpacity} from 'react-native';
 import { TextInput } from 'react-native-paper';
 import firebase from '../../services/connectionFirebase';
@@ -49,7 +49,7 @@ export default function Login({changeStatus}) {
             value={email}
             onChangeText={(text) => setEmail(text)}
             right={<TextInput.Icon icon="email" />}
-          /> <hr/> 
+          />
         
           <TextInput
             label="Password"
@@ -58,19 +58,13 @@ export default function Login({changeStatus}) {
             onChangeText={(text) => setPassword(text)}
             secureTextEntry
             right={<TextInput.Icon icon="eye" />}
-          /> <hr/> 
-    
-          <Button 
-            onPress={() =>this.props.navigation.navigate('TelaPrincipal')}
-            title="Entrar"
-            color="#B8860B"
-          /> 
+          />
 
         </SafeAreaView>
 
 
 
-        <TouchableOpacity style={[styles.handleLogin, { backgroundColor: type === 'login' ? '#4682B4' : '#141414' }]} onPress={'handleLogin'} >
+        <TouchableOpacity style={[styles.handleLogin, { backgroundColor: type === 'login' ? '#1E90FF' : '#7B68EE' }]} onPress={handleLogin} >
           <Text style={styles.loginText}>
             {type === 'login' ? 'Acessar' : 'Cadastrar'}
           </Text>
@@ -89,27 +83,40 @@ export default function Login({changeStatus}) {
   const styles = StyleSheet.create({
     
     container: {
-     flex: 1,
-     backgroundColor: '#000000',
-     padding: 8,
+      flex: 1,
+      backgroundColor: '#FFFFFF',
+      padding: 8,
     },
     
     input: {
-    marginBottom: 20,
-    marginLeft: 40,
-    backgroundColor: '#FFF',
-    borderRadius: 4,
-    height: 45,
-    width: 320,
-    padding: 10,
-    borderWidth: 1,
-    borderColor: '#141414'
-  },
+      marginBottom: 20,
+      marginLeft: 40,
+      backgroundColor: '#FFF',
+      borderRadius: 4,
+      height: 45,
+      width: 320,
+      padding: 10,
+      borderWidth: 1,
+      borderColor: '#141414'
+    },
 
     logo:{
-    width: 350,
-    height: 350,
-  },
+      marginLeft: 50,
+      width: 300,
+      height: 300,
+    },
+
+    handleLogin:{ 
+      alignItems: 'center', 
+      justifyContent:'center', 
+      height: 45, 
+      marginTop:30, 
+    }, 
+
+    loginText:{ 
+      color: '#FFF', 
+      fontSize: 24, 
+    }, 
     
   }
 );

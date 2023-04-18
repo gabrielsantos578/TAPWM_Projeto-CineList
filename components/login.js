@@ -25,7 +25,7 @@ export default function Login() {
       <TouchableOpacity
         style={[styles.handleLogin,
         { backgroundColor: type === 'login' ? '#4682B4' : '#141414' }]}
-        onPress={''}
+        onPress={handleLogin}
       >
         <Text style={styles.loginText}>
           {type === 'login' ? 'Acessar' : 'Cadastrar'}
@@ -46,4 +46,8 @@ const styles = StyleSheet.create({
 
 });
 
-
+<Button 
+            onPress={() =>this.props.navigation.navigate('TelaPrincipal')}
+            title="Entrar"
+            color="#B8860B"
+          /> 
