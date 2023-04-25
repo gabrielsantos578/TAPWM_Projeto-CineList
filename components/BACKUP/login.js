@@ -46,8 +46,8 @@ const styles = StyleSheet.create({
 
 });
 
-<Button 
-            onPress={() =>this.props.navigation.navigate('TelaPrincipal')}
-            title="Entrar"
-            color="#B8860B"
-          /> 
+<Button
+  onPress={() => this.props.navigation.navigate('TelaPrincipal')}
+  title="Entrar"
+  color="#B8860B"
+/> 

@@ -1,65 +1,48 @@
 import * as React from 'react';
-import { Text, View, StyleSheet } from 'react-native';
-import { NavigationContainer } from '@react-navigation/native'; //Posibilita a navegação entre as páginas do aplicativo
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'; //Cria os icones do menu
-import Icon from 'react-native-vector-icons/FontAwesome5'; //Icon é o nome, com 'react-native-vector-icons/' você conseque ver todas as bibliotecas
+import { View, StyleSheet, Text } from 'react-native';
+import { NavigationContainer } from '@react-navigation/native';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import Icon from 'react-native-vector-icons/FontAwesome5';
+//import Produtos from '../Produtos/gerenciarprodutos';
 
-//import GerenciarProdutos from '../Produtos/gerenciarprodutos';
-//import { MaterialCommunityIcons } from '@expo/vector-icons';
-//import LinearGradient from 'react-native-linear-gradient'; 
+
+
+//import LinearGradient from 'react-native-linear-gradient';
 
 
 
 function HomeScreen() {
-
     return (
-
         <View style={styles.container}>
-
             <Text></Text>
-
         </View>
-
     );
-
 }
 
+
+
 function ListScreen() {
-
     return (
-
         <View style={styles.container}>
-
             <Text></Text>
-
         </View>
-
     );
-
 }
 
 
 
 function PostScreen() {
-
-    return <GerenciarProdutos />
-
+    return <Produtos />
 }
 
 
 
 function NotificationsScreen() {
-
     return (
-
         <View style={styles.container}>
-
             <Text></Text>
-
         </View>
-
     );
-
 }
 
 
@@ -68,136 +51,77 @@ const Tab = createBottomTabNavigator();
 
 
 
-export default function MenuTabs() {
-
+export default function Menu() {
     return (
-
         <NavigationContainer>
-
             <Tab.Navigator
+                screenOptions={({ route }) => ({
+                    tabBarIcon: ({ color, size }) => {
+                        let iconName;
 
-                initialRouteName="Home"
 
-                screenOptions={{
 
-                    tabBarActiveTintColor: '#e91e63',
+                        switch (route.name) {
+                            case 'Home':
+                                iconName = 'home';
+                                break;
+                            case 'Listar':
+                                iconName = 'list';
+                                break;
+                            case 'Filmes & Séries':
+                                iconName = 'film';
+                                break;
+                            case 'Ler API':
+                                iconName = 'bell';
+                                break;
+                            default:
+                                iconName = 'add-circle-outline';
+                                break;
+                        }
 
+
+
+                        return <Icon name={iconName} size={size} color={color} />;
+                    },
+                })}
+                tabBarOptions={{
+                    activeTintColor: '#DC143C',
+                    inactiveTintColor: '#00BFFF',
+                    showLabel: true,
                 }}
-
             >
-
+                <Tab.Screen name="Home" component={HomeScreen} />
+                <Tab.Screen name="Listar" component={ListScreen} />
                 <Tab.Screen
-
-                    name="Home"
-
-                    component={HomeScreen}
-
-                    options={{
-
-                        tabBarLabel: 'Home',
-
-                        tabBarIcon: ({ color, size }) => (
-
-                            <MaterialCommunityIcons name="home" color={color} size={size} />
-
-                        ),
-
-                    }}
-
-                />
-
-                <Tab.Screen
-
-                    name="List"
-
-                    component={ListScreen}
-
-                    options={{
-
-                        tabBarLabel: 'Listar Produtos',
-
-                        tabBarIcon: ({ color, size }) => (
-
-                            <MaterialCommunityIcons name="list" color={color} size={size} />
-
-                        ),
-
-                        tabBarBadge: 3,
-
-                    }}
-
-                />
-
-                <Tab.Screen
-
-                    name="Produtos"
-
+                    name="Bicicletas"
                     component={PostScreen}
-
-                    options={{
-
-                        tabBarLabel: 'Produtos',
-
-                        tabBarIcon: ({ color, size }) => (
-
-                            <MaterialCommunityIcons name="save" color={color} size={size} />
-
-                        ),
-
-                    }}
-
                 />
-
+                <Tab.Screen name="Ler API" component={NotificationsScreen} />
             </Tab.Navigator>
-
         </NavigationContainer>
-
     );
-
 }
 
 
 
-
-
 const styles = StyleSheet.create({
-
     container: {
-
         flex: 1,
-
         justifyContent: 'center',
-
         alignItems: 'center'
-
     },
-
     iconTabRound: {
-
         width: 60,
-
         height: 90,
-
         borderRadius: 30,
-
         marginBottom: 20,
-
         flexDirection: 'row',
-
         alignItems: 'center',
-
         justifyContent: 'center',
-
         elevation: 6,
-
         shadowColor: '#9C27B0',
-
         shadowOffset: { width: 0, height: 2 },
-
         shadowOpacity: 0.2,
-
         shadowRadius: 5,
-
     }
-
-}); 
+});
