@@ -93,7 +93,7 @@ export default function Menu() {
                 <Tab.Screen name="Home" component={HomeScreen} />
                 <Tab.Screen name="Listar" component={ListScreen} />
                 <Tab.Screen
-                    name="Bicicletas"
+                    name="Filmes & Séries"
                     component={PostScreen}
                 />
                 <Tab.Screen name="Ler API" component={NotificationsScreen} />
