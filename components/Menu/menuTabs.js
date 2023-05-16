@@ -4,10 +4,8 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 //import Produtos from '../Produto/gerenciarProduto';
-
-
-
 //import LinearGradient from 'react-native-linear-gradient';
+import GerenciarProdutos from '../../components/Produto/gerenciarProdutos';
 
 
 
@@ -31,8 +29,8 @@ function ListScreen() {
 
 
 
-function PostScreen() {
-    return <Produtos />
+function ProdutosScreen() {
+    return <GerenciarProdutos />
 }
 
 
@@ -94,7 +92,7 @@ export default function Menu() {
                 <Tab.Screen name="Listar" component={ListScreen} />
                 <Tab.Screen
                     name="Filmes & Séries"
-                    component={PostScreen}
+                    component={ProdutosScreen}
                 />
                 <Tab.Screen name="Ler API" component={NotificationsScreen} />
             </Tab.Navigator>
