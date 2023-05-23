@@ -2,13 +2,14 @@ import React, { useState, useEffect, useRef } from 'react';
 
 import {
 
-    View, Text, StyleSheet,
+    View, Text, StyleSheet, Button,
 
     TouchableOpacity, Keyboard, FlatList, ActivityIndicator
 
 } from 'react-native';
 
 import { TextInput } from 'react-native-paper';
+import firebase from '../../services/connectionFirebase';
 
 /*
 
@@ -22,17 +23,73 @@ const Separator = () => {
 
 export default function GerenciarProdutos() {
 
-    const [titulo, setTitulo] = useState('');
-    const [genero, setGenero] = useState('');
-    const [produtora, setProdutora] = useState('');
-    const [sinopse, setSinopse] = useState('');
-    const [status, setStatus] = useState('');
-    const [valor, setValor] = useState('');
-    const [dataLancamento, setDataLancamento] = useState('');
-    const [atores, setAtores] = useState('');
-    const [avaliacao, setAvaliacao] = useState('');
+    const [nome, setNome] = useState('');
+    const [marca, setMarca] = useState('');
+    const [preco, setPreco] = useState('');
     const [cor, setCor] = useState('');
     const [key, setKey] = useState('');
+
+    //implementação dos métodos update ou insert 
+
+    async function insertUpdate() {
+
+        //editar dados 
+
+        if (nome !== '' & marca !== '' & preco !== '' & cor !== '' & key !== '') {
+
+            firebase.database().ref('produtos').child(key).update({
+
+                nome: nome, marca: marca, preco: preco, cor: cor
+
+            })
+
+            Keyboard.dismiss(); //para o teclado do celular
+
+            alert('Produto Editado!');
+
+            clearFields();
+
+            setKey('');
+
+            return;
+
+        }
+
+        //cadastrar dados 
+
+        let produtos = await firebase.database().ref('produtos');
+
+        let chave = produtos.push().key; //comando para salvar é o push 
+
+
+
+        produtos.child(chave).set({
+
+            nome: nome,
+
+            marca: marca,
+
+            preco: preco,
+
+            cor: cor
+
+        });
+
+        Keyboard.dismiss();
+
+        alert('Produto Cadastrado!');
+
+        clearFields();
+
+    }
+
+    //Método para limpar os campos com valores
+    function clearFields() {
+        setNome('');
+        setMarca('');
+        setPreco('');
+        setCor('');
+    }
 
     return (
 
@@ -40,7 +97,7 @@ export default function GerenciarProdutos() {
 
             <TextInput
 
-                placeholder='Título'
+                placeholder='Nome'
 
                 left={<TextInput.Icon icon="filmstrip" />}
 
@@ -48,121 +105,37 @@ export default function GerenciarProdutos() {
 
                 style={styles.input}
 
-                onChangeText={(texto) => setTitulo(texto)}
+                onChangeText={(texto) => setNome(texto)}
 
-                value={titulo}
+                value={nome}
 
             />
 
             <TextInput
 
-                placeholder='Gênero'
+                placeholder='Marca'
 
                 left={<TextInput.Icon icon="void" />}
 
                 style={styles.input}
 
-                onChangeText={(texto) => setGenero(texto)}
+                onChangeText={(texto) => setMarca(texto)}
 
-                value={genero}
+                value={marca}
 
             />
 
             <TextInput
 
-                placeholder='Produtora'
+                placeholder='Preço'
 
                 left={<TextInput.Icon icon="file-document-outline" />}
 
                 style={styles.input}
 
-                onChangeText={(texto) => setProdutora(texto)}
+                onChangeText={(texto) => setPreco(texto)}
 
-                value={produtora}
-
-            />
-
-            <TextInput
-
-                placeholder='Sinopse'
-
-                left={<TextInput.Icon icon="file-document" />}
-
-                style={styles.input}
-
-                onChangeText={(texto) => setSinopse(texto)}
-
-                value={sinopse}
-
-            />
-
-            <TextInput
-
-                placeholder='Status'
-
-                left={<TextInput.Icon icon="file-document-outline" />}
-
-                style={styles.input}
-
-                onChangeText={(texto) => setStatus(texto)}
-
-                value={status}
-
-            />
-
-            <TextInput
-
-                placeholder='Valor'
-
-                left={<TextInput.Icon icon="cash" />}
-
-                style={styles.input}
-
-                onChangeText={(texto) => setValor(texto)}
-
-                value={valor}
-
-            />
-
-            <TextInput
-
-                placeholder='Data Lançamento'
-
-                left={<TextInput.Icon icon="calendar" />}
-
-                style={styles.input}
-
-                onChangeText={(texto) => setDataLancamento(texto)}
-
-                value={dataLancamento}
-
-            />
-
-            <TextInput
-
-                placeholder='Atores'
-
-                left={<TextInput.Icon icon="account-star" />}
-
-                style={styles.input}
-
-                onChangeText={(texto) => setAtores(texto)}
-
-                value={atores}
-
-            />
-
-            <TextInput
-
-                placeholder='Avaliação'
-
-                left={<TextInput.Icon icon="star" />}
-
-                style={styles.input}
-
-                onChangeText={(texto) => setAvaliacao(texto)}
-
-                value={avaliacao}
+                value={preco}
 
             />
 
@@ -179,6 +152,22 @@ export default function GerenciarProdutos() {
                 value={cor}
 
             />
+
+            <View style={styles.button}>
+
+                <Button
+
+                    onPress={insertUpdate}
+
+                    title="Salvar"
+
+                    color="#DC143C"
+
+                    accessibilityLabel=""
+
+                />
+
+            </View>
 
         </View>
 
@@ -222,15 +211,17 @@ const styles = StyleSheet.create({
 
     button: {
 
-        flexDirection: 'row',
+        flexDirection: 'column',
 
         alignItems: 'center',
 
-        backgroundColor: '#3ea6f2',
+        textAlign: 'center',
+
+        backgroundColor: '#DC143C',
 
         borderWidth: 0.5,
 
-        borderColor: '#fff',
+        borderColor: '#DC143C',
 
         height: 40,
 

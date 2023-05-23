@@ -64,7 +64,7 @@ export default function Login({changeStatus}) {
 
 
 
-        <TouchableOpacity style={[styles.handleLogin, { backgroundColor: type === 'login' ? '#1E90FF' : '#7B68EE' }]} onPress={handleLogin} >
+        <TouchableOpacity style={[styles.handleLogin, { backgroundColor: type === 'login' ? '#00BFFF' : '#DC143C' }]} onPress={handleLogin} >
           <Text style={styles.loginText}>
             {type === 'login' ? 'Acessar' : 'Cadastrar'}
           </Text>
