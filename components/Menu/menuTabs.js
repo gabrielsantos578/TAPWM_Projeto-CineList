@@ -6,6 +6,7 @@ import Icon from 'react-native-vector-icons/FontAwesome5';
 //import Produtos from '../Produto/gerenciarProduto';
 //import LinearGradient from 'react-native-linear-gradient';
 import GerenciarProdutos from '../../components/Produto/gerenciarProdutos';
+import Perfil from '../../components/Perfil/gerenciarPerfil';
 
 
 
@@ -19,17 +20,13 @@ function HomeScreen() {
 
 
 
-function ListScreen() {
-    return (
-        <View style={styles.container}>
-            <Text></Text>
-        </View>
-    );
+function PerfilScreen() {
+    return <Perfil />
 }
 
 
 
-function ProdutosScreen() {
+function ProdutoScreen() {
     return <GerenciarProdutos />
 }
 
@@ -63,8 +60,8 @@ export default function Menu() {
                             case 'Home':
                                 iconName = 'home';
                                 break;
-                            case 'Listar':
-                                iconName = 'list';
+                            case 'Perfil':
+                                iconName = 'user';
                                 break;
                             case 'Filmes & Séries':
                                 iconName = 'film';
@@ -89,10 +86,13 @@ export default function Menu() {
                 }}
             >
                 <Tab.Screen name="Home" component={HomeScreen} />
-                <Tab.Screen name="Listar" component={ListScreen} />
+                <Tab.Screen
+                    name="Perfil"
+                    component={PerfilScreen}
+                />
                 <Tab.Screen
                     name="Filmes & Séries"
-                    component={ProdutosScreen}
+                    component={ProdutoScreen}
                 />
                 <Tab.Screen name="Ler API" component={NotificationsScreen} />
             </Tab.Navigator>
