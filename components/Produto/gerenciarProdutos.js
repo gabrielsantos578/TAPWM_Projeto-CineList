@@ -10,6 +10,7 @@ import {
 
 import { TextInput } from 'react-native-paper';
 import firebase from '../../services/connectionFirebase';
+import ListaProduto from './listarProdutos';
 
 /*
 
@@ -28,24 +29,68 @@ export default function GerenciarProdutos() {
     const [preco, setPreco] = useState('');
     const [cor, setCor] = useState('');
     const [key, setKey] = useState('');
+    const [produtos, setProdutos] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const inputRef = useRef(null);
 
     //implementação dos métodos update ou insert 
 
     async function insertUpdate() {
 
+        useEffect(() => {
+
+            async function search() {
+
+                await firebase.database().ref('produtos').on('value', (snapshot) => {
+
+                    setProdutos([]);
+
+                    snapshot.forEach((chilItem) => {
+
+                        let data = {
+
+                            //de acordo com a chave de cada item busca os valores 
+                            //cadastrados na relação e atribui nos dados 
+
+                            key: chilItem.key,
+
+                            nome: chilItem.val().nome,
+
+                            marca: chilItem.val().marca,
+
+                            preco: chilItem.val().preco,
+
+                            cor: chilItem.val().cor,
+
+                        };
+
+                        setProdutos(oldArray => [...oldArray, data].reverse());
+
+                    })
+
+                    setLoading(false);
+
+                })
+
+            }
+
+            search();
+
+        }, []);
+
         //editar dados 
 
-        if (nome !== '' & 
-            marca !== '' & 
-            preco !== '' & 
-            cor !== '' & 
+        if (nome !== '' &
+            marca !== '' &
+            preco !== '' &
+            cor !== '' &
             key !== '') {
 
             firebase.database().ref('produtos').child(key).update({
 
-                nome: nome, 
-                marca: marca, 
-                preco: preco, 
+                nome: nome,
+                marca: marca,
+                preco: preco,
                 cor: cor
 
             })
@@ -98,6 +143,44 @@ export default function GerenciarProdutos() {
         setCor('');
     }
 
+    //função para excluir um item  
+
+    function handleDelete(key) {
+
+        firebase.database().ref('produtos').child(key).remove()
+
+            .then(() => {
+
+                //todos os itens que forem diferentes daquele que foi deletado 
+
+                //serão atribuidos no array 
+
+                const findProdutos = cars.filter(item => item.key !== key)
+
+                setProdutos(findProdutos)
+
+            })
+
+    }
+
+
+
+    //função para editar  
+
+    function handleEdit(data) {
+
+        setKey(data.key),
+
+            setNome(data.nome),
+
+            setMarca(data.marca),
+
+            setPreco(data.preco),
+
+            setCor(data.cor)
+
+    }
+
     return (
 
         <View style={styles.container}>
@@ -116,6 +199,8 @@ export default function GerenciarProdutos() {
 
                 value={nome}
 
+                ref={inputRef}
+
             />
 
             <TextInput
@@ -129,6 +214,8 @@ export default function GerenciarProdutos() {
                 onChangeText={(texto) => setMarca(texto)}
 
                 value={marca}
+
+                ref={inputRef}
 
             />
 
@@ -144,6 +231,8 @@ export default function GerenciarProdutos() {
 
                 value={preco}
 
+                ref={inputRef}
+
             />
 
             <TextInput
@@ -157,6 +246,8 @@ export default function GerenciarProdutos() {
                 onChangeText={(texto) => setCor(texto)}
 
                 value={cor}
+
+                ref={inputRef}
 
             />
 
@@ -175,6 +266,44 @@ export default function GerenciarProdutos() {
                 />
 
             </View>
+
+            <View>
+
+                <Text style={styles.listar}>Listagem de Produtos</Text>
+
+            </View>
+
+
+
+            {loading ?
+
+                (
+
+                    <ActivityIndicator color="#121212" size={45} />
+
+                ) :
+
+                (
+
+                    <FlatList
+
+                        keyExtractor={item => item.key}
+
+                        data={produtos}
+
+                        renderItem={({ item }) => (
+
+                            <ListaProduto data={item} deleteItem={handleDelete}
+
+                                editItem={handleEdit} />
+
+                        )}
+
+                    />
+
+                )
+
+            }
 
         </View>
 

@@ -19,6 +19,7 @@ import 'firebase/compat/database';
 let firebaseConfig = {
   apiKey: "AIzaSyDHdET0fiPhV8i4kAbgdRAcGykvUsuN1YM",
   authDomain: "dbcinelist.firebaseapp.com",
+  databaseURL: "https://dbcinelist-default-rtdb.firebaseio.com",
   projectId: "dbcinelist",
   storageBucket: "dbcinelist.appspot.com",
   messagingSenderId: "856508044075",
@@ -29,8 +30,8 @@ let firebaseConfig = {
 /* const app = initializeApp(firebaseConfig); */
 
 if (!firebase.apps.length) {
-    // Initialize Firebase
-     firebase.initializeApp(firebaseConfig);
-    }
+  // Initialize Firebase
+  firebase.initializeApp(firebaseConfig);
+}
 
 export default firebase;

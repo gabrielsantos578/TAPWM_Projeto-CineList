@@ -5,7 +5,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 //import Produtos from '../Produto/gerenciarProduto';
 //import LinearGradient from 'react-native-linear-gradient';
-import FormularioProduto from '../../components/Produto/formularioProduto';
+import GerenciarProduto from '../../components/Produto/gerenciarProdutos';
 import Perfil from '../../components/Perfil/gerenciarPerfil';
 
 
@@ -27,7 +27,7 @@ function PerfilScreen() {
 
 
 function ProdutoScreen() {
-    return <FormularioProduto />
+    return <GerenciarProduto />
 }
 
 
