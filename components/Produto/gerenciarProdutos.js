@@ -12,15 +12,11 @@ import { TextInput } from 'react-native-paper';
 import firebase from '../../services/connectionFirebase';
 import ListaProduto from './listarProdutos';
 
-/*
-
 const Separator = () => {
     return <View style={styles.separator} />;
+
 }
 
-<Separator /> após cada TextInput
-
-*/
 
 export default function GerenciarProdutos() {
 
@@ -33,101 +29,86 @@ export default function GerenciarProdutos() {
     const [loading, setLoading] = useState(true);
     const inputRef = useRef(null);
 
-    //implementação dos métodos update ou insert 
 
-    async function insertUpdate() {
+    useEffect(() => {
 
-        useEffect(() => {
+        async function search() {
 
-            async function search() {
+            await firebase.database().ref('produtos').on('value', (snapshot) => {
 
-                await firebase.database().ref('produtos').on('value', (snapshot) => {
+                setProdutos([]);
 
-                    setProdutos([]);
+                snapshot.forEach((chilItem) => {
 
-                    snapshot.forEach((chilItem) => {
+                    let data = {
 
-                        let data = {
+                        //de acordo com a chave de cada item busca os valores
+                        //cadastrados na relação e atribui nos dados
 
-                            //de acordo com a chave de cada item busca os valores 
-                            //cadastrados na relação e atribui nos dados 
+                        key: chilItem.key,
+                        nome: chilItem.val().nome,
+                        marca: chilItem.val().marca,
+                        preco: chilItem.val().preco,
+                        cor: chilItem.val().cor,
 
-                            key: chilItem.key,
+                    };
 
-                            nome: chilItem.val().nome,
-
-                            marca: chilItem.val().marca,
-
-                            preco: chilItem.val().preco,
-
-                            cor: chilItem.val().cor,
-
-                        };
-
-                        setProdutos(oldArray => [...oldArray, data].reverse());
-
-                    })
-
-                    setLoading(false);
+                    setProdutos(oldArray => [...oldArray, data].reverse());
 
                 })
 
-            }
-
-            search();
-
-        }, []);
-
-        //editar dados 
-
-        if (nome !== '' &
-            marca !== '' &
-            preco !== '' &
-            cor !== '' &
-            key !== '') {
-
-            firebase.database().ref('produtos').child(key).update({
-
-                nome: nome,
-                marca: marca,
-                preco: preco,
-                cor: cor
+                setLoading(false);
 
             })
 
-            Keyboard.dismiss(); //para o teclado do celular
+        }
 
+        search();
+
+    }, []);
+
+
+    //implementação dos métodos update ou insert
+
+    async function insertUpdate() {
+
+        //editar dados
+
+        if (nome !== '' & marca !== '' & cor !== '' & preco !== '' & key !== '') {
+
+            firebase.database().ref('produtos').child(key).update({
+                nome: nome, marca: marca, cor: cor, preco: preco
+
+            })
+
+            Keyboard.dismiss();
             alert('Produto Editado!');
-
             clearFields();
-
             setKey('');
 
             return;
 
         }
 
-        //cadastrar dados 
+
+
+
+        //cadastrar dados
 
         let produtos = await firebase.database().ref('produtos');
 
-        let chave = produtos.push().key; //comando para salvar é o push 
-
-
+        let chave = produtos.push().key; //comando para salvar é o push
 
         produtos.child(chave).set({
-
+            
             nome: nome,
-
             marca: marca,
-
             preco: preco,
-
             cor: cor
 
         });
 
-        Keyboard.dismiss();
+        Keyboard.dismiss(); //para o teclado do celular não subir e atrapalhar.
 
         alert('Produto Cadastrado!');
 
@@ -135,12 +116,54 @@ export default function GerenciarProdutos() {
 
     }
 
-    //Método para limpar os campos com valores
+
+
+
+    // método para limpar os campos com valores
+
     function clearFields() {
+
         setNome('');
         setMarca('');
         setPreco('');
         setCor('');
+
+    }
+
+
+
+
+    //função para excluir um item  
+
+    function handleDelete(key) {
+
+        firebase.database().ref('produtos').child(key).remove()
+
+            .then(() => {
+
+                //todos os itens que forem diferentes daquele que foi deletado
+                //serão atribuidos no array
+
+                const findProdutos = produtos.filter(item => item.key !== key)
+                setProdutos(findProdutos)
+
+            })
+
+    }
+
+
+
+
+    //função para editar  
+
+    function handleEdit(data) {
+
+        setKey(data.key),
+        setNome(data.nome),
+        setMarca(data.marca),
+        setPreco(data.preco),
+        setCor(data.cor)
+
     }
 
     //função para excluir um item  

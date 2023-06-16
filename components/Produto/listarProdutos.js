@@ -27,7 +27,7 @@ export default function Listagem({ data, deleteItem, editItem }) {
 
         <TouchableOpacity onPress={() => deleteItem(data.key)}>
 
-          <Icon name="trash" color="#A52A2A" size={20}>Excluir</Icon>
+          <Icon name="trash" color="#DC143C" size={20}>Excluir</Icon>
 
         </TouchableOpacity>
 
@@ -59,7 +59,7 @@ const styles = StyleSheet.create({
 
     padding: 10,
 
-    backgroundColor: '#FAFAD2',
+    backgroundColor: '#FFF',
 
   },
 
