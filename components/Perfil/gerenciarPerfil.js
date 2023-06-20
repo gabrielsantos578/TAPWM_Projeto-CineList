@@ -55,7 +55,7 @@ export default function GerenciarPerfil() {
 
             Keyboard.dismiss(); //para o teclado do celular
 
-            alert('Produto Editado!');
+            alert('Perfil Editado!');
 
             clearFields();
 
@@ -85,7 +85,7 @@ export default function GerenciarPerfil() {
 
         Keyboard.dismiss();
 
-        alert('Produto Cadastrado!');
+        alert('Perfil Cadastrado!');
 
         clearFields();
 
